@@ -54,6 +54,7 @@ def make_chains(text_string):
         
         new_ngram = (words[i], words[i+1])
 
+        # could do this in one line with a .get() statement *TRY LATER*
         if new_ngram in chains:
             chains[new_ngram].append(words[i+2]) #appends new value to existing value list for given key
         else: #else happens first
@@ -61,15 +62,37 @@ def make_chains(text_string):
 
         # i += 1
 
-    # your code goes here
-    print(chains)
     return chains
 
 
 def make_text(chains):
     """Return text from chains."""
+    # create sorted list of keys from dictionary
+    # return random key to get our first key
+
+    # create chain of fake text with link
+    # randomly pick key and value
+
 
     words = []
+
+    keys_list = sorted(chains) # makes chains into a list and sorts alphabetically
+
+    first_key = choice(keys_list) #assigns first key to random value in keys_list
+    words = list(first_key) # Creates a new list called words and assigns it to values in tuple first_key
+
+    key = first_key
+
+    while key:
+        if key in chains:
+            next_word = choice(chains[key])
+            words.append(next_word)
+            next_key = (key[1], next_word)
+            key = next_key
+        else:
+            break
+
+
 
     # your code goes here
 
