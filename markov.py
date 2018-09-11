@@ -3,6 +3,9 @@
 from random import choice
 import sys
 
+#constant - how many words in "gram"
+N = 3
+
 
 def open_and_read_file(file_path):
     """Take file path as string; return text as string.
@@ -49,21 +52,38 @@ def make_chains(text_string):
 
     chains = {}
 
-    # i = 0
-    for i in range(len(words) - 2):
-    # while i < len(words) - 2:
+    # # i = 0
+    # for i in range(len(words) - 2):
+    # # while i < len(words) - 2:
         
-        new_ngram = (words[i], words[i+1])
+    #     new_ngram = (words[i], words[i+1])
+
+    #     # could do this in one line with a .get() statement *TRY LATER*
+    #     if new_ngram in chains:
+    #         chains[new_ngram].append(words[i+2]) #appends new value to existing value list for given key
+    #     else: #else happens first
+    #         chains[new_ngram] = [words[i+2]] #assigns new key to value 
+
+    #     # i += 1
+
+    # return chains
+
+    for i in range(len(words) - N): #looping through each string in a list up to len - N
+        
+        new_ngram_list = [] # creating a new list 
+        for j in range(N): # loops N times
+            new_ngram_list.append(words[i+j]) # Adding words and i + j index to new_ngram_list
+
+        new_ngram = tuple(new_ngram_list)
 
         # could do this in one line with a .get() statement *TRY LATER*
         if new_ngram in chains:
-            chains[new_ngram].append(words[i+2]) #appends new value to existing value list for given key
+            chains[new_ngram].append(words[i+N]) #appends new value to existing value list for given key
         else: #else happens first
-            chains[new_ngram] = [words[i+2]] #assigns new key to value 
-
-        # i += 1
+            chains[new_ngram] = [words[i+N]] #assigns new key to value 
 
     return chains
+
 
 
 def make_text(chains):
@@ -88,7 +108,12 @@ def make_text(chains):
         if key in chains:
             next_word = choice(chains[key])
             words.append(next_word)
-            next_key = (key[1], next_word)
+
+            # next_key = (key[1], next_word)
+            next_key_list = list(key)[1:]
+            next_key_list.append(next_word)
+            next_key = tuple(next_key_list) 
+
             key = next_key
         else:
             break
