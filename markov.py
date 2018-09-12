@@ -4,7 +4,7 @@ from random import choice
 import sys
 
 #constant - how many words in "gram"
-N = 3
+N = 2
 
 
 def open_and_read_file(file_path):
@@ -81,7 +81,7 @@ def make_chains(text_string):
             chains[new_ngram].append(words[i+N]) #appends new value to existing value list for given key
         else: #else happens first
             chains[new_ngram] = [words[i+N]] #assigns new key to value 
-
+    
     return chains
 
 
@@ -99,29 +99,47 @@ def make_text(chains):
 
     keys_list = sorted(chains) # makes chains into a list and sorts alphabetically
 
-    first_key = choice(keys_list) #assigns first key to random value in keys_list
+    # first_key = choice(keys_list) #assigns first key to random value in keys_list
+    # words = list(first_key) # Creates a new list called words and assigns it to values in tuple first_key
+
+
+    # loop through keys_list, make keys_list_startswithupper
+
+    # loop through len(keys_list) times 
+    keys_list_startswithupper = []
+
+    for i in range(len(keys_list)):
+        if keys_list[i][0][0].isupper():
+            keys_list_startswithupper.append(keys_list[i])
+
+    print(keys_list_startswithupper)
+
+
+    first_key = choice(keys_list_startswithupper) #assigns first key to random value in keys_list
     words = list(first_key) # Creates a new list called words and assigns it to values in tuple first_key
 
-    key = first_key
+    key = first_key # assigns first_key (random value) to key (tuple)
 
-    while key:
-        if key in chains:
-            next_word = choice(chains[key])
-            words.append(next_word)
+    while key: #while True
+        if key in chains: #if we can find the tuple key in chains:
+            next_word = choice(chains[key]) # Assign new variable next_word to random value from this key
+            words.append(next_word) #Add new_words to list words
 
             # next_key = (key[1], next_word)
-            next_key_list = list(key)[1:]
-            next_key_list.append(next_word)
-            next_key = tuple(next_key_list) 
+            next_key_list = list(key)[1:]  #Create a new var next_key_list, key as a list from index 1 to last index
+            next_key_list.append(next_word) # adds next_word (string) to this list
+            next_key = tuple(next_key_list) # creates a variable next_key, a tuple of list next_key_list
 
-            key = next_key
+            key = next_key # Assigns next_key (tuple) as the key
+            # print(key) # This prints each n gram
         else:
             break
 
-
+    # if some word in words at index [0] .isupper() # checks if first letter is uppercase    
+    # Either returns true or false 
+    # 
 
     # your code goes here
-
     return " ".join(words)
 
 
@@ -129,6 +147,8 @@ input_path = sys.argv[1]
 
 # Open the file and turn it into one long string
 input_text = open_and_read_file(input_path)
+
+# input_ngram = ???
 
 # Get a Markov chain
 chains = make_chains(input_text)
