@@ -2,6 +2,7 @@
 
 from random import choice
 import sys
+import string
 
 #constant - how many words in "gram"
 N = 2
@@ -112,7 +113,7 @@ def make_text(chains):
         if keys_list[i][0][0].isupper():
             keys_list_startswithupper.append(keys_list[i])
 
-    print(keys_list_startswithupper)
+    # print(keys_list_startswithupper)
 
 
     first_key = choice(keys_list_startswithupper) #assigns first key to random value in keys_list
@@ -135,9 +136,11 @@ def make_text(chains):
         else:
             break
 
-    # if some word in words at index [0] .isupper() # checks if first letter is uppercase    
-    # Either returns true or false 
-    # 
+    last_char = words[-1][-1]
+    while last_char not in string.punctuation:
+        words.pop()
+        last_char = words[-1][-1] # reassigns last_char to last index of updated list
+
 
     # your code goes here
     return " ".join(words)
