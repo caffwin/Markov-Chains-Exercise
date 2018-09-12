@@ -24,7 +24,7 @@ def open_and_read_file(file_path):
     return text
 
 
-def make_chains(*args):
+def make_chains(input_texts):
     """Take input text as string; return dictionary of Markov chains.
 
     A chain will be a key that consists of a tuple of (word1, word2)
@@ -54,9 +54,9 @@ def make_chains(*args):
     # print(len(locals()))
     # print(len(args))
 
-    for i in range(len(args)):
+    for i in range(len(input_texts)):
 
-        text_string = args[i]
+        text_string = input_texts[i]
 
         words = text_string.split()
 
@@ -154,17 +154,23 @@ def make_text(chains):
 
 
 input_path = sys.argv[1]
+input_texts = []
 
 # Open the file and turn it into one long string
 input_text = open_and_read_file(input_path)
 
-try:
-    if sys.argv[2]:
-        input_text2 = open_and_read_file(sys.argv[2])
-        chains = make_chains(input_text, input_text2)
-except IndexError:
-    # Get a Markov chain
-    chains = make_chains(input_text)
+for i in range(len(sys.argv)-1):
+    input_texts.append(open_and_read_file(sys.argv[i+1]))
+
+chains = make_chains(input_texts)
+
+# try:
+#     if sys.argv[2]:
+#         input_text2 = open_and_read_file(sys.argv[2])
+#         chains = make_chains(input_text, input_text2)
+# except IndexError:
+#     # Get a Markov chain
+#     chains = make_chains(input_text)
 
 # input_ngram = ???
 
