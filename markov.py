@@ -5,7 +5,7 @@ import sys
 import string
 
 #constant - how many words in "gram"
-N = 2
+N = 3
 
 
 def open_and_read_file(file_path):
@@ -24,7 +24,7 @@ def open_and_read_file(file_path):
     return text
 
 
-def make_chains(text_string):
+def make_chains(*args):
     """Take input text as string; return dictionary of Markov chains.
 
     A chain will be a key that consists of a tuple of (word1, word2)
@@ -49,9 +49,16 @@ def make_chains(text_string):
         [None]
     """
 
-    words = text_string.split()
-
     chains = {}
+
+    # print(len(locals()))
+    # print(len(args))
+
+    for i in range(len(args)):
+
+        text_string = args[i]
+
+        words = text_string.split()
 
     # # i = 0
     # for i in range(len(words) - 2):
@@ -69,19 +76,19 @@ def make_chains(text_string):
 
     # return chains
 
-    for i in range(len(words) - N): #looping through each string in a list up to len - N
-        
-        new_ngram_list = [] # creating a new list 
-        for j in range(N): # loops N times
-            new_ngram_list.append(words[i+j]) # Adding words and i + j index to new_ngram_list
+        for i in range(len(words) - N): #looping through each string in a list up to len - N
+            
+            new_ngram_list = [] # creating a new list 
+            for j in range(N): # loops N times
+                new_ngram_list.append(words[i+j]) # Adding words and i + j index to new_ngram_list
 
-        new_ngram = tuple(new_ngram_list)
+            new_ngram = tuple(new_ngram_list)
 
-        # could do this in one line with a .get() statement *TRY LATER*
-        if new_ngram in chains:
-            chains[new_ngram].append(words[i+N]) #appends new value to existing value list for given key
-        else: #else happens first
-            chains[new_ngram] = [words[i+N]] #assigns new key to value 
+            # could do this in one line with a .get() statement *TRY LATER*
+            if new_ngram in chains:
+                chains[new_ngram].append(words[i+N]) #appends new value to existing value list for given key
+            else: #else happens first
+                chains[new_ngram] = [words[i+N]] #assigns new key to value 
     
     return chains
 
@@ -151,10 +158,18 @@ input_path = sys.argv[1]
 # Open the file and turn it into one long string
 input_text = open_and_read_file(input_path)
 
+try:
+    if sys.argv[2]:
+        input_text2 = open_and_read_file(sys.argv[2])
+        chains = make_chains(input_text, input_text2)
+except IndexError:
+    # Get a Markov chain
+    chains = make_chains(input_text)
+
 # input_ngram = ???
 
-# Get a Markov chain
-chains = make_chains(input_text)
+# # Get a Markov chain
+# chains = make_chains(input_text)
 
 # Produce random text
 random_text = make_text(chains)
